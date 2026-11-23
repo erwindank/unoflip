@@ -75,7 +75,7 @@
   const other = side => (side === 'L' ? 'D' : 'L');
   const face = (card, side) => card[side];
   const clone = o => JSON.parse(JSON.stringify(o));
-  const ci = card => (card ? { L: card.L, D: card.D } : null);   // card as stored in events/log
+  const ci = card => (card ? { id: card.id, L: card.L, D: card.D } : null);   // card as stored in events
 
   function nextActive(state, fromIdx, dir = state.direction, steps = 1) {
     const n = state.players.length;
@@ -205,8 +205,9 @@
       matchTarget: opts.matchTarget || 0,
       roundNo: (opts.roundNo || 0) + 1
     };
-    // the first player is never a disconnected one
-    if (st.players[0].disconnected) st.currentPlayerIndex = nextActive(st, 0, 1);
+    // who starts moves round the table from game to game; never a disconnected player
+    st.currentPlayerIndex = (opts.first || 0) % st.players.length;
+    if (st.players[st.currentPlayerIndex].disconnected) st.currentPlayerIndex = nextActive(st, st.currentPlayerIndex, 1);
     addLog(st, 'log.start', { name: st.players[st.currentPlayerIndex].name });
     return st;
   }
@@ -269,6 +270,8 @@
         if (!isTurn) return 'notYourTurn';
         if (st.phase) return 'busy';
         const hand = st.hands[me] || [];
+        // cards are chosen by id (safe if the hand changed meanwhile); index still works
+        if (move.id != null) move = { ...move, i: hand.findIndex(c => c.id === move.id) };
         const card = hand[move.i];
         if (!card) return 'noCard';
         if (st.drawn && card.id !== st.drawn.id) return 'onlyDrawn';
@@ -509,6 +512,60 @@
     return 'unknownMove';
   }
 
+  // ---------- Someone joins / leaves in the middle of a round ----------
+  // A late joiner gets 7 cards and sits last in the order
+  function addPlayer(state, player) {
+    const st = clone(state);
+    st.ev = { n: (state.ev?.n || 0) + 1, list: [] };
+    st.seq = (state.seq || 0) + 1;
+    st.players = [...st.players, { ...player, cardCount: 0, disconnected: false }];
+    const got = take(st, player.id, HAND_SIZE);
+    emit(st, { t: 'draw', pid: player.id, n: got.length, why: 'join' });
+    addLog(st, 'log.joined', { name: player.name });
+    syncCounts(st);
+    return st;
+  }
+  // A player who leaves: their cards go back under the deck and the turn moves on
+  function removePlayer(state, pid) {
+    const idx = indexOf(state, pid);
+    if (idx < 0) return state;
+    const st = clone(state);
+    st.ev = { n: (state.ev?.n || 0) + 1, list: [] };
+    st.seq = (state.seq || 0) + 1;
+    const name = nameOf(st, pid);
+    st.drawPile = [...st.drawPile, ...(st.hands[pid] || [])];
+    delete st.hands[pid];
+    if (st.stats) delete st.stats[pid];
+    const wasCur = st.currentPlayerIndex === idx;
+    const ph = st.phase;
+    st.players = st.players.filter(p => p.id !== pid);
+    addLog(st, 'log.left', { name });
+    if (st.status !== 'playing') { syncCounts(st); return st; }
+    const n = st.players.length;
+    if (!n) { st.status = 'ended'; return st; }
+    // keep pointing at the same "next" person
+    let cur = st.currentPlayerIndex;
+    if (idx < cur) cur--;
+    else if (wasCur) cur = st.direction === 1 ? idx % n : (idx - 1 + n) % n;
+    st.currentPlayerIndex = cur;
+    if (st.players[cur]?.disconnected) st.currentPlayerIndex = nextActive(st, cur);
+    // anything that was waiting on them is dropped
+    if (ph && (ph.target === pid || ph.by === pid || ph.pid === pid)) {
+      if (ph.k === 'color') {
+        st.topColor = SIDES[st.side].colors[Math.floor(Math.random() * 4)];
+        const a = indexOf(st, ph.after);
+        if (a >= 0) st.currentPlayerIndex = a;
+      }
+      st.phase = null;
+    }
+    if (st.drawn?.pid === pid) st.drawn = null;
+    if (st.uno?.pid === pid) st.uno = null;
+    syncCounts(st);
+    const alive = st.players.filter(p => !p.disconnected);
+    if (alive.length === 1) endRound(st, alive[0].id, 'lastPlayer');
+    return st;
+  }
+
   // After a play: one card left means the player must shout (others may catch them)
   function setUno(st, pid, left) {
     if (left === 1) st.uno = { pid, at: st.seq };
@@ -553,6 +610,12 @@
 
     const legal = legalPlays(st, pid);
     if (!legal.length) return st.drawn ? { t: 'pass' } : { t: 'draw' };
+    // easy bots sometimes just play any card they can
+    if (level.random && rnd() < level.random) {
+      const i = legal[Math.floor(rnd() * legal.length)];
+      const f = face(hand[i], side);
+      return f.c === WILD_COLOR ? { t: 'play', i, color: bestColor(hand.filter((_, k) => k !== i), side) } : { t: 'play', i };
+    }
 
     const nxt = st.players[nextActive(st, indexOf(st, pid))];
     const threat = Math.min(...st.players.filter(p => p.id !== pid && !p.disconnected).map(p => p.cardCount));
@@ -597,7 +660,7 @@
 
   const Engine = {
     SIDES, NUMBERS, POINTS, WILD_COLOR, HAND_SIZE, MATCH_TARGET, GAME_KEYS,
-    createDeck, shuffle, newRound, apply, legalPlays, isPlayable, isWildValue,
+    createDeck, shuffle, newRound, apply, legalPlays, addPlayer, removePlayer, isPlayable, isWildValue,
     face, other, nextActive, cardPoints, bestColor, botMove, leader, hadColor
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = Engine;

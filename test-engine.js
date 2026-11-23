@@ -113,6 +113,19 @@ console.log('Hand-made situations');
   ok(E.apply(r.state, { t: 'timeout', seq: st.seq }, 'sys').error === 'stale', 'stale timeout ignored');
 }
 
+{ // Joining and leaving mid-round keeps every card
+  let st = E.newRound(P(4));
+  st = E.addPlayer(st, { id: 'late', name: 'Late' });
+  ok(st.hands.late.length === 7 && st.players.length === 5, 'late joiner gets 7');
+  st.currentPlayerIndex = 2;
+  st = E.removePlayer(st, 'p2');
+  ok(st.players[st.currentPlayerIndex].id === 'p3', 'turn passes on when the current player leaves');
+  const all = [...st.drawPile, ...st.discard, ...Object.values(st.hands).flat()];
+  ok(all.length === 112, 'no cards lost when leaving');
+  st = E.removePlayer(E.removePlayer(E.removePlayer(st, 'p0'), 'p1'), 'p3');
+  ok(st.status === 'ended' && st.winner === 'late', 'last one left wins');
+}
+
 // ---------- Many full bot games ----------
 const PERSONAS = ['attacker', 'flipper', 'saver', 'bluffer', 'balanced'];
 function nested(v, depth = 0) {   // Firestore forbids arrays directly inside arrays
@@ -130,11 +143,14 @@ for (let g = 0; g < N; g++) {
     steps++;
     // sometimes a player drops out, sometimes people shout / catch
     if (Math.random() < 0.002 && n > 2) {
-      const p = st.players[Math.floor(Math.random() * n)];
+      const p = st.players[Math.floor(Math.random() * st.players.length)];
       if (!p.disconnected && st.players.filter(x => !x.disconnected).length > 2) {
         st = { ...st, players: st.players.map(x => x.id === p.id ? { ...x, disconnected: true } : x) };
       }
     }
+    if (Math.random() < 0.003 && st.players.length > 2) st = E.removePlayer(st, st.players[Math.floor(Math.random() * st.players.length)].id);
+    else if (Math.random() < 0.002 && st.players.length < 10) st = E.addPlayer(st, { id: 'j' + steps, name: 'J' + steps });
+    if (st.status !== 'playing') break;
     if (st.uno && Math.random() < 0.5) {
       const r = Math.random() < 0.6 ? E.apply(st, { t: 'shout' }, st.uno.pid)
         : E.apply(st, { t: 'catch' }, st.players.find(p => p.id !== st.uno.pid).id);
