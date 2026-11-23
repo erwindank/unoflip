@@ -101,3 +101,17 @@ addStrings({
   'seat.card':  ['{n} carta', '{n} card'],
   'seat.cards': ['{n} cartas', '{n} cards']
 });
+
+// ---- 5. Title screen ---------------------------------------------------------
+addStrings({ 'land.howLink': ['Cómo jugar', 'How to play'] });
+// Three real cards fanned behind the name: a Day card, the Volteo card in the middle
+// (it keeps turning over: Day face ↔ Night face) and a Night card.
+document.addEventListener('DOMContentLoaded', () => {
+  const logo = document.querySelector('#screen-landing .logo-flip');
+  if (!logo || typeof faceHTML !== 'function') return;
+  logo.classList.add('title-fan');
+  logo.innerHTML =
+    faceHTML({ c: 'red', v: '7' }, 'L', { cls: 'tf-side tf-left' }) +
+    `<div class="logo-card">${faceHTML({ c: 'green', v: 'flip' }, 'L', { cls: 'lc-face lc-day' })}${faceHTML({ c: 'violet', v: 'flip' }, 'D', { cls: 'lc-face lc-night' })}</div>` +
+    faceHTML({ c: 'cyan', v: 'draw5' }, 'D', { cls: 'tf-side tf-right' });
+});

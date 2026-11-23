@@ -67,6 +67,8 @@
     <!-- One tap into a game against 3 bots -->
     <button class="btn btn-bots-quick" id="quick-bots-btn" onclick="handleQuickBots()">🤖 <span data-i18n="land.bots">Jugar contra bots</span></button>
     <div id="landing-error" class="error hidden"></div>
+    <!-- new look (title screen): the rules summary above is hidden on the start page; this opens the full rules window -->
+    <button type="button" class="link-btn how-link" onclick="openRules()">📖 <span data-i18n="land.howLink">Cómo jugar</span></button>
     <p class="muted" style="font-size:.75rem;text-align:center" data-i18n="land.players">Hasta 10 jugadores · No se necesita cuenta</p>
     <button type="button" class="link-btn stats-link" onclick="openMyStats()">🏅 <span data-i18n="stats.open">Tus estadísticas e insignias</span><span id="stats-link-count"></span></button>
   </div>

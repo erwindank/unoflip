@@ -399,3 +399,90 @@ body.calm .opponent.active-player .seat-ring::before, body.calm .seat-pill-uno {
   #opponents-row .opponent-cards { height: 24px; }
   #opponents-row .opponent-cards .mini-face { width: 14px; height: 20px; font-size: 8px; }
 }
+
+/* ============================================================
+   5. TITLE SCREEN
+   Big logo (a fan of real cards — the middle one keeps turning Day ↔ Night — and the
+   name in the game font), clear buttons, and the long rules summary moved out:
+   "Cómo jugar" opens the full rules window instead.
+   Button order: name → Jugar contra bots → Crear sala / Unirse → guided game → rules.
+   ============================================================ */
+.landing-card {
+  background: rgba(12,8,34,.6);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 24px;
+  padding: 1.6rem 1.6rem 1.3rem;
+  width: min(420px, 94vw);
+  gap: .85rem;
+}
+.landing-card .rules-card { display: none; }
+.landing-lang   { order: 0; }
+.logo-flip      { order: 1; }
+.game-title     { order: 2; }
+.landing-card > .tagline { order: 3; margin-top: -.2rem; }
+.name-emoji-area { order: 4; margin-top: .3rem; }
+#quick-bots-btn { order: 5; }
+.landing-card > .btn-group { order: 6; }
+#join-form      { order: 7; }
+#tutorial-link  { order: 8; }
+.how-link       { order: 9; }
+#landing-error  { order: 10; }
+.landing-card > p.muted { order: 11; }
+.stats-link     { order: 12; }
+
+/* the fan of cards */
+.logo-flip.title-fan { display: flex; justify-content: center; align-items: flex-end; height: 100px; margin-bottom: -8px; perspective: 700px; }
+.title-fan > .card, .title-fan .logo-card { width: 56px; height: 84px; flex-shrink: 0; }
+.title-fan > .card { transform-origin: 50% 110%; }
+.title-fan .tf-left  { rotate: -16deg; translate: 10px 8px; }
+.title-fan .tf-right { rotate: 16deg; translate: -10px 8px; }
+.title-fan .logo-card { position: relative; z-index: 1; transform-style: preserve-3d; animation: logo-turn 5s cubic-bezier(.6,0,.3,1) infinite; }
+.title-fan .logo-card .lc-face {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.title-fan .logo-card .lc-night { transform: rotateY(180deg); }
+body.calm .title-fan .logo-card { animation: none; }
+
+/* the name */
+.game-title .title-main {
+  font-family: var(--lk-display); font-weight: 400;
+  font-size: clamp(3.6rem, 16vw, 4.6rem); line-height: .95; letter-spacing: 1px;
+  -webkit-text-stroke: 4px var(--lk-out); paint-order: stroke fill;
+  text-shadow: 5px 6px 0 var(--lk-out);
+  display: inline-block; rotate: -4deg; position: relative; z-index: 1;
+}
+.game-title .t-day { color: var(--lk-sun); }
+.game-title .t-night { color: var(--lk-moon); }
+.landing-card > .tagline { color: #e5e9ff; }
+
+/* big chunky buttons (same family as step 6) */
+#screen-landing .btn { font-family: var(--lk-display); font-weight: 400; letter-spacing: .4px; border-radius: 14px; min-height: 50px; font-size: 1.15rem; }
+#quick-bots-btn {
+  background: var(--lk-sun); color: var(--lk-out); border: 0;
+  box-shadow: 0 4px 0 #b8860b, 0 8px 16px rgba(0,0,0,.35);
+  font-size: 1.35rem; min-height: 58px;
+}
+#quick-bots-btn:hover { background: #ffde6b; }
+#create-btn {
+  background: #7c3aed; color: #fff; border: 0;
+  box-shadow: 0 4px 0 #4c1d95, 0 8px 16px rgba(0,0,0,.35);
+  -webkit-text-stroke: 1px var(--lk-out); paint-order: stroke fill;
+}
+.landing-card > .btn-group .btn-secondary {
+  background: rgba(255,255,255,.12); color: #fff; border: 0;
+  box-shadow: 0 4px 0 rgba(0,0,0,.35);
+}
+#screen-landing .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.4); }
+#tutorial-link, #tutorial-link.first-time {
+  background: rgba(255,255,255,.07); border: 1.5px dashed rgba(255,255,255,.3);
+  color: #fff; font-size: 1rem; min-height: 46px;
+}
+.how-link { align-self: center; color: #e5e9ff; font-size: .9rem; }
+.stats-link { align-self: center; color: #e5e9ff; }
+@media (max-height: 700px) {
+  .logo-flip.title-fan { height: 76px; }
+  .title-fan > .card, .title-fan .logo-card { width: 44px; height: 66px; }
+  .game-title .title-main { font-size: 3.4rem; }
+}
+
