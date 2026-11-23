@@ -28,7 +28,7 @@ and VIRUS!, with its own name and look (not the Mattel product's name or art).
 2. [x] App shell: index.html, style (two-sided cards, Day/Night table), landing, lobby
 3. [x] Game screen on the engine: hand, table, opponents' visible other faces, draw pile,
        colour picker, challenge panel, ¡ÚLTIMA!, log; chat/voice/music/Spotify/Last.fm from Fiesta
-4. [x] Bots (personalities + levels) and practice mode
+4. [x] Bots (5 personalities + 3 levels) and one-tap "play against bots"
 5. [x] fx.js (flying cards, the big flip animation, stamps, sounds) + extras.js (faces, timer,
        zoom, menu, awards, stats, badges, invites/QR, throws, reconnect)
 6. [x] Guided first game, ES/EN, rules window
