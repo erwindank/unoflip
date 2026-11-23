@@ -25,11 +25,27 @@ and VIRUS!, with its own name and look (not the Mattel product's name or art).
 
 ## Steps
 1. [x] Rules engine + tests
-2. [ ] App shell: index.html, style (two-sided cards, Day/Night table), landing, lobby
-3. [ ] Game screen on the engine: hand, table, opponents' visible other faces, draw pile,
+2. [x] App shell: index.html, style (two-sided cards, Day/Night table), landing, lobby
+3. [x] Game screen on the engine: hand, table, opponents' visible other faces, draw pile,
        colour picker, challenge panel, ¡ÚLTIMA!, log; chat/voice/music/Spotify/Last.fm from Fiesta
-4. [ ] Bots (personalities + levels) and practice mode
-5. [ ] fx.js (flying cards, the big flip animation, stamps, sounds) + extras.js (faces, timer,
+4. [x] Bots (personalities + levels) and practice mode
+5. [x] fx.js (flying cards, the big flip animation, stamps, sounds) + extras.js (faces, timer,
        zoom, menu, awards, stats, badges, invites/QR, throws, reconnect)
-6. [ ] Guided first game, ES/EN, rules window
-7. [ ] Icons, manifest, service worker, browser tests
+6. [x] Guided first game, ES/EN, rules window
+7. [x] Icons, manifest, service worker, browser tests
+
+## Testing notes
+- `node test-engine.js [games]` — rules by hand + thousands of bot games (2–10 players,
+  joins/leaves/disconnects, shouts/catches); checks no card is lost or copied, cardCount stays
+  in sync, every game ends, and every state can be saved to Firestore.
+- Browser checks (2026-11-22) ran with Playwright against an in-memory stand-in for Firebase,
+  so no test rooms were written to the live database: guided game to the end, a full game
+  against 3 bots (Day → Night flips, winner screen, badge), English, the challenge panel +
+  stamp, and a match to 500 into round 2 with points kept. No page errors.
+- Not yet tried: two real devices in the same online room.
+
+## Before going live
+- GitHub Pages: Settings → Pages → deploy from `master`, root. The game will then be at
+  erwindank.github.io/unoflip/.
+- Spotify sharing sends people back to this page after logging in: add
+  `https://erwindank.github.io/unoflip/` to the Spotify app's Redirect URIs.

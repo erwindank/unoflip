@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- ¡VOLTEA! app icon: one card, half Day (sun) and half Night (moon), on a split sky -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb44d"/><stop offset=".45" stop-color="#f0642a"/>
+      <stop offset=".55" stop-color="#3b1d78"/><stop offset="1" stop-color="#0e0626"/>
+    </linearGradient>
+    <clipPath id="cardclip"><rect x="146" y="86" width="220" height="340" rx="34"/></clipPath>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#sky)"/>
+  <g transform="rotate(-10 256 256)">
+    <g clip-path="url(#cardclip)">
+      <rect x="146" y="86" width="220" height="340" fill="#f59e0b"/>
+      <polygon points="366,86 366,426 146,426" fill="#1a0f3a"/>
+    </g>
+    <rect x="146" y="86" width="220" height="340" rx="34" fill="none" stroke="#fff" stroke-width="14"/>
+    <!-- sun (Day half) -->
+    <circle cx="222" cy="200" r="46" fill="#fff"/>
+    <g stroke="#fff" stroke-width="10" stroke-linecap="round">
+      <line x1="222" y1="128" x2="222" y2="140"/><line x1="160" y1="200" x2="172" y2="200"/>
+      <line x1="178" y1="156" x2="186" y2="164"/><line x1="266" y1="156" x2="258" y2="164"/>
+    </g>
+    <!-- moon (Night half) -->
+    <path d="M316 296a52 52 0 1 1-46-70 42 42 0 0 0 46 70z" fill="#c4b5fd"/>
+    <circle cx="330" cy="370" r="5" fill="#fff"/><circle cx="268" cy="388" r="4" fill="#fff"/>
+  </g>
+</svg>
