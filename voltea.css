@@ -236,7 +236,8 @@ body.calm #screen-game::after { display: none; }
 .landing-card { position: relative; }
 .logo-flip { display: flex; justify-content: center; perspective: 700px; margin-bottom: -.4rem; }
 .logo-card { position: relative; width: 62px; height: 90px; transform-style: preserve-3d; animation: logo-turn 5s cubic-bezier(.6,0,.3,1) infinite; }
-.logo-card span {
+/* direct children only: look.js swaps in real cards, whose inner spans must not get this */
+.logo-card > span {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 2rem;
   border-radius: 11px; backface-visibility: hidden; border: 2px solid rgba(255,255,255,.85); box-shadow: 0 10px 26px rgba(0,0,0,.45);
 }
