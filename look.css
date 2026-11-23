@@ -516,7 +516,12 @@ h2 { text-wrap: balance; }
 .turn-order-info { white-space: nowrap; gap: .4rem; }
 .toi-item { gap: .4rem; }
 .toi-label { letter-spacing: .8px; font-weight: 800; }
-.toi-name { font-family: var(--lk-display); font-weight: 400; font-size: .85rem; letter-spacing: .3px; max-width: 28vw; overflow: hidden; text-overflow: ellipsis; }
+.toi-name { font-family: var(--lk-display); font-weight: 400; font-size: .85rem; letter-spacing: .3px; }
+/* the bigger font made the old 18% pulse run names into their labels: a gentler glow only */
+.toi-prev-name, .toi-prev-label { animation-name: lk-toi-gray; }
+.toi-next-name, .toi-next-label { animation-name: lk-toi-green; }
+@keyframes lk-toi-gray  { 0%, 100% { text-shadow: 0 0 4px rgba(156,163,175,.4); } 50% { text-shadow: 0 0 12px rgba(156,163,175,.95); } }
+@keyframes lk-toi-green { 0%, 100% { text-shadow: 0 0 4px rgba(134,239,172,.4); } 50% { text-shadow: 0 0 12px rgba(134,239,172,.95); } }
 .hand-label { font-weight: 800; letter-spacing: 1px; }
 @media (max-width: 480px) {
   .toi-name { font-size: .72rem; }
@@ -563,3 +568,21 @@ h2 { text-wrap: balance; }
 .lang-switch { border: 0; border-radius: 99px; background: rgba(0,0,0,.35); padding: 2px; }
 .lang-btn { background: transparent; color: #e5e9ff; border-radius: 99px; font-weight: 900; }
 .lang-btn.selected { background: var(--lk-sun); color: var(--lk-out); }
+
+/* ============================================================
+   7. MOVEMENT
+   Deal at the start of a game, higher arc + landing bounce for played cards (fx.js),
+   and a big ¡ÚLTIMA! with confetti (look.js). Calm mode keeps it still.
+   ============================================================ */
+.lk-uno-burst {
+  position: fixed; z-index: 10;
+  font-family: var(--lk-display); font-size: 4rem; line-height: 1;
+  color: var(--lk-sun);
+  -webkit-text-stroke: 4px var(--lk-out); paint-order: stroke fill;
+  text-shadow: 5px 6px 0 var(--lk-out);
+  white-space: nowrap; pointer-events: none;
+}
+.lk-uno-burst.lk-night { color: var(--lk-moon); text-shadow: 5px 6px 0 var(--lk-out), 0 0 24px rgba(167,139,250,.7); }
+.lk-confetti { position: fixed; z-index: 9; width: 8px; height: 13px; border-radius: 2px; pointer-events: none; }
+.fx-fly.lk-deal { position: fixed; left: 0; top: 0; }
+.fx-uno-word { font-family: var(--lk-display); }
