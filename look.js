@@ -69,3 +69,27 @@ function lookWildCenterHTML(value, side) {
 function lookBackHTML(side) {
   return `<div class="card card-back-generic lk-back s-${side}"><span class="lk-back-disc"></span><span class="lk-back-name">VOLTEO</span></div>`;
 }
+
+// ---- 2. Table: direction ring around the piles ----------------------------
+// Called from renderStatus() in app.js on every render. Keeps one SVG ring inside
+// .pile-area; the dashes march clockwise (direction 1) or the other way (-1).
+let _lookDir = null;
+function lookDirectionRing(direction) {
+  const area = document.querySelector('#screen-game .pile-area');
+  if (!area) return;
+  let ring = area.querySelector('.dir-ring');
+  if (!ring) {
+    ring = document.createElement('div');
+    ring.className = 'dir-ring';
+    ring.setAttribute('aria-hidden', 'true');
+    ring.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none"><ellipse cx="50" cy="50" rx="48" ry="46" vector-effect="non-scaling-stroke"/></svg>
+      <span class="dir-arrow dir-arrow-r"></span><span class="dir-arrow dir-arrow-l"></span>`;
+    area.prepend(ring);
+  }
+  ring.classList.toggle('ccw', direction !== 1);
+  // a quick flash when a Reverse changes the direction
+  if (_lookDir !== null && _lookDir !== direction) {
+    ring.classList.remove('flip'); void ring.offsetWidth; ring.classList.add('flip');
+  }
+  _lookDir = direction;
+}

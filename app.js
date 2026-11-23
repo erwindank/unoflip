@@ -986,6 +986,8 @@ function renderStatus(state) {
 
   const dirEl = document.getElementById('direction-indicator');
   if (dirEl) dirEl.innerHTML = `<span class="dir-arrow">${state.direction === 1 ? '↻' : '↺'}</span>`;
+  // new look (look.js): a moving ring around the piles shows the direction (the ↻ button is hidden)
+  if (typeof lookDirectionRing === 'function') lookDirectionRing(state.direction);
   // Which side is up (and the colour to match)
   const sideEl = document.getElementById('side-indicator');
   if (sideEl) {

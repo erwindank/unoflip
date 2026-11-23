@@ -199,3 +199,83 @@
 .mini-face.s-L { border: 1.5px solid var(--lk-white); color: #fff; -webkit-text-stroke: 1.6px var(--lk-out); paint-order: stroke fill; text-shadow: none; }
 .mini-face.s-L.c-yellow { color: #fff; }
 .mini-face.s-D { border-width: 1.5px; }
+
+/* ============================================================
+   2. A REAL TABLE
+   The piles sit on a round felt table with a rim and a soft light in the middle.
+   ☀️ Day: blue felt, warm wooden rim.   🌙 Night: violet felt, dark silver rim.
+   The drifting colour circles (extras.css Y8) are switched off, and the dashed ring
+   around the piles (look.js) replaces the ↻ direction button. The ☀️/🌙 side pill stays.
+   ============================================================ */
+:root, body.side-L {
+  --lk-felt-hi: #3f86e8; --lk-felt: #1d4fa6; --lk-felt-lo: #0d2a66;
+  --lk-rim: 0 0 0 7px #4a2412, 0 0 0 9px #8a5530, 0 0 0 10px #1c0c05;
+  --lk-ring: var(--lk-sun);
+}
+body.side-D {
+  --lk-felt-hi: #6a3fc0; --lk-felt: #3a1d7a; --lk-felt-lo: #150a33;
+  --lk-rim: 0 0 0 7px #1e1a2e, 0 0 0 9px #6f6a8a, 0 0 0 10px #07050e, 0 0 26px rgba(167,139,250,.35);
+  --lk-ring: var(--lk-moon);
+}
+#screen-game::before { display: none; }
+#screen-game { background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 40%, rgba(0,0,0,.45) 100%), var(--table-grad); }
+.direction-indicator { display: none; }
+.game-table .pile-area {
+  position: relative;
+  isolation: isolate;
+  gap: 2rem;
+  padding: 40px 80px 32px;
+  margin-top: .3rem;
+}
+/* felt + rim */
+.game-table .pile-area::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.18), rgba(255,255,255,0) 55%),
+    repeating-radial-gradient(circle at 30% 30%, rgba(255,255,255,.025) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, var(--lk-felt-hi), var(--lk-felt) 45%, var(--lk-felt-lo) 85%);
+  box-shadow: var(--lk-rim), 0 18px 40px rgba(0,0,0,.55), inset 0 0 40px rgba(0,0,0,.5);
+  transition: background .6s, box-shadow .6s;
+}
+.game-table .pile-label { color: rgba(255,255,255,.75); font-weight: 800; letter-spacing: 1.2px; font-size: .62rem; }
+
+/* direction ring */
+.dir-ring { position: absolute; inset: 12px 22px; z-index: -1; pointer-events: none; }
+.dir-ring svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.dir-ring ellipse {
+  fill: none; stroke: var(--lk-ring); stroke-width: 2.5; opacity: .6;
+  stroke-dasharray: 9 11;
+  animation: lk-march 1.4s linear infinite;
+}
+.dir-ring.ccw ellipse { animation-direction: reverse; }
+@keyframes lk-march { to { stroke-dashoffset: -40; } }
+/* arrowheads on the left and right ends of the ring */
+.dir-arrow {
+  position: absolute; top: 50%; width: 0; height: 0;
+  border-left: 6px solid transparent; border-right: 6px solid transparent;
+  border-top: 10px solid var(--lk-ring);
+  opacity: .85;
+}
+.dir-arrow-r { right: -5px; transform: translateY(-50%); }                 /* clockwise: down on the right */
+.dir-arrow-l { left: -5px;  transform: translateY(-50%) rotate(180deg); }  /* …and up on the left */
+.dir-ring.ccw .dir-arrow-r { transform: translateY(-50%) rotate(180deg); }
+.dir-ring.ccw .dir-arrow-l { transform: translateY(-50%); }
+.dir-ring.flip { animation: lk-dir-flip .7s ease-out; }
+@keyframes lk-dir-flip {
+  0%   { transform: scale(1);    filter: drop-shadow(0 0 0 var(--lk-ring)); }
+  40%  { transform: scale(1.08); filter: drop-shadow(0 0 10px var(--lk-ring)); }
+  100% { transform: scale(1);    filter: drop-shadow(0 0 0 var(--lk-ring)); }
+}
+body.calm .dir-ring ellipse, body.calm .dir-ring.flip { animation: none; }
+/* side pill sits like a sign above the table */
+.side-indicator { background: rgba(0,0,0,.4); border-color: rgba(255,255,255,.2); padding: .3rem .85rem; }
+
+@media (max-height: 650px) {
+  .game-table .pile-area { padding: 28px 60px 22px; gap: 1.4rem; }
+}
+@media (max-width: 380px) {
+  .game-table .pile-area { padding: 34px 50px 26px; gap: 1.3rem; }
+}
