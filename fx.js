@@ -286,7 +286,9 @@ const FX = (() => {
   const pileRect = () => document.getElementById('top-card')?.getBoundingClientRect() || null;
   const deckRect = () => document.getElementById('draw-pile-card')?.getBoundingClientRect() || null;
   // A drawn card flies showing the face everyone can see: the side that is NOT up
-  const backHTML = side => `<div class="card card-back-generic s-${side}"><span>${side === 'L' ? '☀' : '☾'}</span></div>`;
+  // new look (look.js): a clean VOLTEO badge on cards flying out of the deck
+  const backHTML = side => typeof lookBackHTML === 'function' ? lookBackHTML(side)
+    : `<div class="card card-back-generic s-${side}"><span>${side === 'L' ? '☀' : '☾'}</span></div>`;
 
   // My hand cards, measured just before I play (app.js calls noteHand in selectCard)
   let handRects = {};

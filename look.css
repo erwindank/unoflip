@@ -1,0 +1,201 @@
+/* ============================================================
+   VOLTEO — NEW LOOK (the 7 ideas of the UNO Fiesta new look, made for both sides, 2026-11-23)
+   Loaded after style.css, extras.css and voltea.css; those stay untouched.
+   1 card faces · 2 table · 3 hand fan · 4 seats · 5 title screen · 6 font + buttons · 7 movement
+   ============================================================ */
+:root {
+  --lk-white: #fbf6ef;      /* Day card border + sun disc */
+  --lk-out:   #120a1f;      /* dark outline used on numbers and pictures */
+  --lk-sun:   #ffd24a;
+  --lk-moon:  #c4b5fd;
+  --lk-display: 'Lilita One', 'Arial Black', Impact, sans-serif;
+  --lk-body:    'Nunito', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ============================================================
+   1. REAL CARD FACES
+   ☀️ Day:   white border, colour face with a dot pattern and a shine, a white sun
+             disc with rays in the middle, a big outlined number (or a drawn picture).
+   🌙 Night: dark starry face, a thick neon rim in the card colour, a glowing moon ring,
+             a big neon number with a dark outline.
+   Sizes inside the card use cqw (percent of the card's width), so the same rules work
+   for the hand, the table, the deck, previews and flying cards.
+   ============================================================ */
+.c-red     { --cc2: #ff6a5c; }
+.c-yellow  { --cc2: #ffd35a; }
+.c-green   { --cc2: #55d27f; }
+.c-blue    { --cc2: #5c95ff; }
+.c-magenta { --cc2: #ff6cc4; }
+.c-cyan    { --cc2: #6be8f5; }
+.c-orange  { --cc2: #ffa45c; }
+.c-violet  { --cc2: #a98bff; }
+
+.card.s-L, .card.s-D { container-type: inline-size; }
+
+/* ---- Day face ---- */
+.card.s-L {
+  border: 3px solid var(--lk-white);
+  border-radius: 10px;
+  background-color: var(--cc);
+  background-image:
+    radial-gradient(rgba(255,255,255,.16) 1.2px, transparent 1.8px),
+    linear-gradient(160deg, var(--cc2), var(--cc) 62%);
+  background-size: 9px 9px, 100% 100%;
+  box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 5px 12px rgba(0,0,0,.45), 0 2px 0 rgba(0,0,0,.35);
+}
+/* the sun: a white disc with a dark edge and short rays around it */
+.card.s-L .card-oval {
+  width: 70%;
+  background: var(--lk-white);
+  box-shadow: 0 0 0 2px var(--lk-out), 2px 3px 0 2px rgba(0,0,0,.28);
+}
+.card.s-L .card-oval::before {
+  content: '';
+  position: absolute; inset: -16%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255,255,255,.55) 0 9deg, transparent 9deg 30deg);
+  -webkit-mask: radial-gradient(circle, transparent 60%, #000 61%, #000 69%, transparent 70%);
+          mask: radial-gradient(circle, transparent 60%, #000 61%, #000 69%, transparent 70%);
+  z-index: -1;
+}
+/* the shine across the top */
+.card.s-L::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(155deg, rgba(255,255,255,.3) 0 24%, rgba(255,255,255,0) 25%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- Night face ---- */
+.card.s-D {
+  border: 3px solid var(--cc);
+  border-radius: 10px;
+  background:
+    radial-gradient(1px 1px at 18% 22%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 14%, #e9e2ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 84% 72%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 22% 86%, #cfc4ff 50%, transparent 51%),
+    radial-gradient(circle at 30% 18%, color-mix(in srgb, var(--cc) 22%, #1d1040) 0%, #0d0720 72%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.6), 0 0 12px color-mix(in srgb, var(--cc) 60%, transparent), 0 5px 12px rgba(0,0,0,.55);
+}
+/* the moon: a glowing ring with a soft crescent of light inside */
+.card.s-D .card-oval {
+  width: 72%;
+  border: 3.5cqw solid var(--cc);
+  background:
+    radial-gradient(circle at 66% 34%, transparent 38%, color-mix(in srgb, var(--cc) 30%, transparent) 40%, transparent 64%),
+    #0b0618;
+  box-shadow: 0 0 0 1.5px var(--lk-out), 0 0 14px var(--cc), inset 0 0 12px color-mix(in srgb, var(--cc) 55%, transparent);
+}
+.card.s-D::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(155deg, rgba(255,255,255,.1) 0 22%, rgba(255,255,255,0) 23%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- big number / +1 / +5 ---- */
+.card.s-L .card-label.center,
+.card.s-D .card-label.center,
+#top-card .card .card-label.center,
+.player-hand .card.s-L .card-label.center,
+.player-hand .card.s-D .card-label.center {
+  position: relative; z-index: 2;
+  font-family: var(--lk-display);
+  font-weight: 400;
+  font-size: 46cqw !important;   /* !important: beats the fixed rem sizes in style/extras/voltea */
+  letter-spacing: 0;
+  line-height: 1;
+  color: var(--cc);
+  -webkit-text-stroke: 3cqw var(--lk-out);
+  paint-order: stroke fill;
+  text-shadow: 3cqw 3.5cqw 0 var(--lk-out);
+}
+/* two-sign labels (+1, +5, +2, +?) are a bit smaller so they fit the disc */
+.card[data-v="draw1"] .card-label.center, .card[data-v="draw5"] .card-label.center,
+.card[data-v="wild2"] .card-label.center, .card[data-v="wildColor"] .card-label.center { font-size: 38cqw !important; }
+.card.s-D .card-label.center {
+  color: color-mix(in srgb, var(--cc) 55%, #fff);
+  text-shadow: 3cqw 3.5cqw 0 var(--lk-out), 0 0 6cqw var(--cc), 0 0 14cqw var(--cc);
+}
+
+/* ---- drawn picture in the middle ---- */
+.card .card-icon {
+  position: relative; z-index: 2;
+  width: 50cqw; display: grid; place-items: center;
+  color: var(--cc);
+  filter: drop-shadow(2.5cqw 3cqw 0 rgba(18,10,31,.9));
+}
+.card.s-D .card-icon { color: color-mix(in srgb, var(--cc) 70%, #fff); filter: drop-shadow(2.5cqw 3cqw 0 rgba(18,10,31,.9)) drop-shadow(0 0 4cqw var(--cc)); }
+.card .card-icon svg { width: 100%; height: auto; overflow: visible; }
+.card .flip-mark { display: none; }
+
+/* ---- corners ---- */
+.card.s-L .card-label.tl, .card.s-L .card-label.br,
+.card.s-D .card-label.tl, .card.s-D .card-label.br,
+#top-card .card .card-label.tl, #top-card .card .card-label.br {
+  z-index: 2;
+  font-family: var(--lk-display);
+  font-weight: 400;
+  font-size: 16cqw;
+  line-height: 1;
+  color: #fff;
+  -webkit-text-stroke: 2.4cqw var(--lk-out);
+  paint-order: stroke fill;
+  text-shadow: none;
+}
+.card.s-D .card-label.tl, .card.s-D .card-label.br,
+#top-card .card.s-D .card-label.tl, #top-card .card.s-D .card-label.br { color: color-mix(in srgb, var(--cc) 55%, #fff); }
+.card .card-label.tl { top: 5cqw; left: 7cqw; }
+.card .card-label.br { bottom: 5cqw; right: 7cqw; }
+.card .card-label.has-icon { width: 17cqw; display: grid; color: #fff; }
+.card.s-D .card-label.has-icon { color: color-mix(in srgb, var(--cc) 70%, #fff); }
+.card .card-label.has-icon svg { width: 100%; height: auto; }
+.card .corner-quad { display: block; width: 100%; aspect-ratio: 1; border-radius: 3px; box-shadow: 0 0 0 1.5px var(--lk-out); }
+/* the colour-blind shape sits under the disc, small */
+.card .cb-glyph { font-size: 12cqw; bottom: 4cqw; }
+
+/* ---- wilds: black card, a disc in the side's four colours ---- */
+.card.c-wild.s-L { --cc: #fbf6ef; background: radial-gradient(circle at 30% 18%, #2e2a33, #0e0c12 75%); border-color: var(--lk-white); }
+.card.c-wild.s-D { --cc: #c4b5fd; background: radial-gradient(circle at 50% 30%, #2a1650, #0b0618 75%); border-color: var(--lk-moon); box-shadow: 0 0 0 1px rgba(0,0,0,.6), 0 0 14px rgba(196,181,253,.55), 0 5px 12px rgba(0,0,0,.55); }
+.card .wild-disc {
+  position: absolute; left: 50%; top: 50%;
+  width: 70%; aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--lk-out), 0 0 0 4cqw rgba(255,255,255,.85), 0 0 0 5.5cqw var(--lk-out);
+  z-index: 1;
+}
+.card.c-wild.s-D .wild-disc { box-shadow: 0 0 0 2px var(--lk-out), 0 0 0 4cqw var(--lk-moon), 0 0 0 5.5cqw var(--lk-out), 0 0 18px var(--lk-moon); }
+.card .wild-disc ~ .card-label.center { color: #fff !important; }
+.card.c-wild .wild-quad, .card.c-wild .wild-extra-label { display: none; }
+/* a wild on the table: the colour that was picked as a glowing ring (kept from voltea.css, sharper) */
+.card.chosen { box-shadow: 0 0 0 4px var(--chosen), 0 0 22px var(--chosen), 0 5px 12px rgba(0,0,0,.55); }
+
+/* ---- cards flying out of the deck: a clean VOLTEO badge ---- */
+.card.card-back-generic.lk-back {
+  flex-direction: column; gap: 4cqw;
+  border: 3px solid var(--lk-white);
+  background:
+    radial-gradient(rgba(255,210,74,.5) 1.2px, transparent 1.8px) 0 0 / 12px 12px,
+    linear-gradient(160deg, #2a1a6e, #0b0a24);
+}
+.card.card-back-generic.lk-back.s-D { border-color: var(--lk-moon); }
+.lk-back-disc {
+  width: 56cqw; aspect-ratio: 1; border-radius: 50%;
+  background: linear-gradient(90deg, var(--lk-sun) 0 50%, #7c3aed 50%);
+  box-shadow: 0 0 0 2px var(--lk-out), 0 0 0 4cqw rgba(255,255,255,.9), 0 0 0 5.5cqw var(--lk-out);
+  rotate: -20deg;
+}
+.lk-back-name {
+  font-family: var(--lk-display); font-size: 17cqw; line-height: 1; letter-spacing: .5px;
+  color: #fff; -webkit-text-stroke: 2.4cqw var(--lk-out); paint-order: stroke fill;
+}
+
+/* ---- rivals' tiny faces: same outlined lettering ---- */
+.mini-face { font-family: var(--lk-display); font-weight: 400; letter-spacing: 0; }
+.mini-face.s-L { border: 1.5px solid var(--lk-white); color: #fff; -webkit-text-stroke: 1.6px var(--lk-out); paint-order: stroke fill; text-shadow: none; }
+.mini-face.s-L.c-yellow { color: #fff; }
+.mini-face.s-D { border-width: 1.5px; }

@@ -71,14 +71,19 @@ function faceHTML(face, side, opts = {}) {
   if (!face) return '';
   const wild = face.c === WILD_COLOR;
   const lbl = symbolOf(face.v);
+  // new look (look.js): drawn pictures for reverse / skip / skip all / flip, four-colour disc on wilds
+  const look = typeof lookIconHTML === 'function';
+  const icon = look ? lookIconHTML(face.v) : '';
   const center = wild
-    ? `${wildQuadHTML(side)}${lbl ? `<span class="wild-extra-label">${lbl}</span>` : ''}`
+    ? (look ? lookWildCenterHTML(face.v, side) : `${wildQuadHTML(side)}${lbl ? `<span class="wild-extra-label">${lbl}</span>` : ''}`)
+    : icon ? icon
     : face.v === 'flip' ? `<span class="card-label center flip-mark">${side === 'L' ? '☀' : '☾'}<i>◐</i></span>`
     : `<span class="card-label center">${lbl}</span>`;
+  const corner = pos => look ? lookCornerHTML(face.v, side, pos) : `<span class="card-label ${pos}">${lbl || '★'}</span>`;
   const chosen = opts.chosen ? ` chosen" style="--chosen:${CARD_HEX[opts.chosen]}` : '';
   return `<div class="card s-${side} c-${face.c}${opts.cls ? ' ' + opts.cls : ''}${chosen}" data-v="${face.v}"${opts.attrs || ''}>
     <span class="card-oval"></span>
-    <span class="card-label tl">${lbl || '★'}</span>${center}<span class="card-label br">${lbl || '★'}</span>
+    ${corner('tl')}${center}${corner('br')}
     ${wild ? '' : `<span class="cb-glyph">${CB_GLYPH[face.c] || ''}</span>`}
   </div>`;
 }
