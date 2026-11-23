@@ -955,19 +955,23 @@ function renderOpponents(state) {
     const hasVoice = !!peerConns[p.id];
     // You can see the other side of everyone else's cards
     const hand = state.hands?.[p.id] || [];
-    const shown = hand.slice(0, 14).map(c => miniHTML(c[other], other)).join('');
-    const more = hand.length > 14 ? `<span class="mini-more">+${hand.length - 14}</span>` : '';
+    // new look: the faces sit in a small fan (--k = position, --n = how many are shown)
+    const SHOW = 10;
+    const shownN = Math.min(hand.length, SHOW);
+    const shown = hand.slice(0, SHOW).map((c, k) => miniHTML(c[other], other).replace('<span ', `<span style="--k:${k}" `)).join('');
+    const more = hand.length > SHOW ? `<span class="mini-more">+${hand.length - SHOW}</span>` : '';
     const nearWin = p.cardCount > 0 && p.cardCount <= 2;
     const reconnecting = !isDisconnected && !isBot(p.id) && presenceMissingSince[p.id];
     const pts = state.matchTarget ? `<span class="opp-points">${state.points?.[p.id] || 0} pts</span>` : '';
     return `<div class="opponent ${isCurrent ? 'active-player' : ''} ${p.id === nextId && !isCurrent ? 'next-player' : ''} ${nearWin ? 'near-win' : ''}
                                 ${isDisconnected ? 'player-disconnected' : ''} ${isSpeaking ? 'voice-speaking' : ''}"
                data-uid="${esc(p.id)}">
-      ${typeof seatFaceHTML === 'function' ? seatFaceHTML(state, p) : ''}
+      ${isCurrent ? `<span class="seat-pill seat-pill-turn">${t('seat.turn')}</span>` : p.cardCount === 1 ? `<span class="seat-pill seat-pill-uno">${t('seat.uno')}</span>` : ''}
+      <div class="seat-ring">${typeof seatFaceHTML === 'function' ? seatFaceHTML(state, p) : ''}</div>
       <div class="opponent-name">${esc(p.name)}${isDisconnected ? ` <span class="dc-badge">${t('lob.dc')}</span>` : ''}${hasVoice ? ' <span class="voice-mic-icon">🎤</span>' : ''}</div>
       ${reconnecting ? `<span class="rc-badge" data-since="${presenceMissingSince[p.id]}" data-turn="${isCurrent ? 1 : 0}">${t('rc.label')}</span>` : ''}
-      <div class="opponent-cards" title="${esc(t('opp.otherSide'))}">${shown}${more}</div>
-      <div class="opponent-count">${p.cardCount}🃏${pts}</div>
+      <div class="opponent-cards" style="--n:${shownN}" title="${esc(t('opp.otherSide'))}">${shown}${more}</div>
+      <div class="opponent-count">${t(p.cardCount === 1 ? 'seat.card' : 'seat.cards', { n: p.cardCount })}${pts}</div>
     </div>`;
   }).join('');
 }

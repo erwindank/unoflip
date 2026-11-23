@@ -93,3 +93,11 @@ function lookDirectionRing(direction) {
   }
   _lookDir = direction;
 }
+
+// ---- 4. Seats: words used on the players around the table -----------------
+addStrings({
+  'seat.turn':  ['SU TURNO', 'THEIR TURN'],
+  'seat.uno':   ['¡ÚLTIMA!', 'LAST CARD!'],
+  'seat.card':  ['{n} carta', '{n} card'],
+  'seat.cards': ['{n} cartas', '{n} cards']
+});
