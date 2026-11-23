@@ -1,4 +1,4 @@
-# ¡VOLTEA! build plan (2026-11-22)
+# VOLTEO build plan (2026-11-22)
 
 A two-sided card game ("flip" style) built to the same standard as UNO Fiesta, UNO Mentiroso
 and VIRUS!, with its own name and look (not the Mattel product's name or art).

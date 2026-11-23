@@ -219,7 +219,7 @@ addEnglish({
   'w.other': 'Join another room', 'w.next': 'Next round ▶', 'w.nextWait': 'Waiting for the host to deal the next round…',
   'chat.ph': 'Message…',
   'mp.title': 'Background music?', 'mp.desc': 'Adds some atmosphere to the game', 'mp.yes': 'Yes, with music', 'mp.no': 'No music',
-  'rules.title': '📖 ¡VOLTEA! rules',
+  'rules.title': '📖 VOLTEO rules',
   'rules.goalT': 'Goal', 'rules.goal': 'Be the first to run out of cards. Each card must match the table card\'s <strong>colour</strong> or <strong>number/symbol</strong>, or be a wild. If you can\'t play, draw one: if it fits you may play it straight away, otherwise your turn passes.',
   'rules.sidesT': 'Two sides', 'rules.sides': 'Every card has a <strong>☀️ Day</strong> face (red, yellow, green, blue) and a <strong>🌙 Night</strong> face (magenta, cyan, orange, violet). Everyone plays the same side. You see your own cards\' face and the <strong>other side</strong> of everybody else\'s cards — and of the top card of the deck.',
   'rules.flipT': '◐ Flip', 'rules.flip': 'Turns everything over: hands, deck and the table card, which now shows the Flip card\'s other face (its action doesn\'t count). If that face is a wild, the player who flipped picks the colour. Play continues with the next player.',

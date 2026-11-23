@@ -1,5 +1,5 @@
 // ============================================================
-// EXTRAS — everything on top of the basic game (¡VOLTEA!)
+// EXTRAS — everything on top of the basic game (VOLTEO)
 //
 // Loaded after app.js; it uses app.js globals (roomState, localUid, db, FX, t…).
 // app.js calls into here through a few hooks, all guarded with `typeof`:
@@ -767,7 +767,7 @@ addStrings({
   'inv.title': ['Invita a tus amigos', 'Invite your friends'], 'inv.copy': ['Copiar enlace', 'Copy link'],
   'inv.copied': ['¡Copiado!', 'Copied!'], 'inv.whatsapp': ['WhatsApp', 'WhatsApp'], 'inv.share': ['Compartir', 'Share'],
   'inv.qr': ['Código QR', 'QR code'], 'inv.qrHelp': ['Escanéalo con la cámara del móvil para entrar.', 'Scan it with a phone camera to join.'],
-  'inv.msg': ['¡Juega ¡VOLTEA! conmigo! Entra aquí: {url}', 'Play ¡VOLTEA! with me! Join here: {url}'],
+  'inv.msg': ['¡Juega VOLTEO conmigo! Entra aquí: {url}', 'Play VOLTEO with me! Join here: {url}'],
   'inv.joining': ['Entrando en la sala {code}…', 'Joining room {code}…'],
   'inv.needName': ['Escribe tu nombre y pulsa Unirse para entrar en la sala {code}.', 'Type your name and press Join to enter room {code}.']
 });
@@ -789,7 +789,7 @@ function copyInviteLink(btn) {
   const done = () => { btn.textContent = '✓ ' + t('inv.copied'); setTimeout(() => { btn.textContent = '🔗 ' + t('inv.copy'); }, 1500); };
   navigator.clipboard?.writeText(inviteURL()).then(done, done) ?? done();
 }
-function shareInvite() { navigator.share?.({ title: '¡VOLTEA!', url: inviteURL() }).catch(() => {}); }
+function shareInvite() { navigator.share?.({ title: 'VOLTEO', url: inviteURL() }).catch(() => {}); }
 function toggleInviteQR() { _qrOpen = !_qrOpen; if (roomState) renderLobby(roomState); }
 let _qrLib = null;
 function drawInviteQR() {

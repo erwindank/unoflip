@@ -1,5 +1,5 @@
 // ============================================================
-// FX — sounds, vibration and on-screen effects (¡VOLTEA!)
+// FX — sounds, vibration and on-screen effects (VOLTEO)
 //
 //   cards fly: every play (from the player's seat — mine from the card's real spot),
 //              draws and penalties

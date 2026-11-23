@@ -1,5 +1,5 @@
 // ============================================================
-// ¡VOLTEA! — rules engine
+// VOLTEO — rules engine
 //
 // Every card has two faces: a ☀️ Day face (side 'L') and a 🌙 Night face (side 'D').
 // Everybody plays on the same side; a Volteo (flip) card turns the whole game over —

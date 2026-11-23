@@ -1,5 +1,5 @@
 // ============================================================
-// ¡VOLTEA! — online card game with a two-sided deck
+// VOLTEO — online card game with a two-sided deck
 //
 // Same family as UNO Fiesta, UNO Mentiroso and VIRUS! (same Firebase project; rooms
 // are tagged game:'voltea'). What is different here:

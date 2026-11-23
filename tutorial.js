@@ -1,5 +1,5 @@
 // ============================================================
-// Guided first game (¡VOLTEA!)
+// Guided first game (VOLTEO)
 //
 // A short game on this device only, against "Profe Volteo", with a fixed deck so every
 // lesson works:
